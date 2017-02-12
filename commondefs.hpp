@@ -14,8 +14,7 @@ struct Point {
     Orientation w;
 };
 
-struct PathStructure
-{
+struct PathStructure {
     Point ball,gpleft,gpright;
     Point obj[10];
     int noofobstacles;

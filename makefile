@@ -8,10 +8,10 @@ Obstacle.o: commondefs.hpp Obstacle.cpp Obstacle.hpp
 	g++ -c Obstacle.cpp
 
 Path.hpp: commondefs.hpp Drawer.hpp Obstacle.hpp
-
 Path.o: Path.cpp Path.hpp
 	g++ -c Path.cpp
 
+Graph.hpp: commondefs.hpp Obstacle.hpp
 Graph.o: Graph.hpp Graph.cpp
 	g++ -c Graph.cpp
 

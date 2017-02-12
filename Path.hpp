@@ -17,14 +17,15 @@ class Path
 	private:
 		PathStructure p;
 		Point start,ball,goal;
-		vector<Obstacle> obstacle_list;
 		vector<Segment> final_path;
 		Graph tree;
 		Drawer dr;
 	public:
-		Path(PathStructure p);
-		void update(); // extract data from drawer obj
+		Path(PathStructure ps) {
+			p = ps;
+		}
+		void update();
 		// vector<Segment> getPath();
-		void draw();	
+		void draw();
 };
 #endif

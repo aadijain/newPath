@@ -14,7 +14,7 @@ void Obstacle::extreme_points(Point source, Point target, Point &p1, Point &p2)
 
 	p1.parent_id= source.id; // can also be done in addLine fnc
 	p1.obstacle_id = this->id;
-	p2.obstacle_id = this->id;	
+	p2.obstacle_id = this->id;
 	p2.parent_id= source.id;
 }
 
@@ -36,7 +36,7 @@ void Obstacle::tangent_points(Point source, Point &p1, Point &p2)
 
 	p1.parent_id= source.id; // can also be done in addLine fnc
 	p1.obstacle_id = this->id;
-	p2.obstacle_id = this->id;	
+	p2.obstacle_id = this->id;
 	p2.parent_id= source.id;
 }
 
@@ -45,7 +45,7 @@ void Obstacle::dct_points(Obstacle target_obstacle, Point &p1a, Point &p1b, Poin
 {
 	double x,y,r1,r2,l;
 	Point m,p1a,p1b,p2a,p2b;
-	r = this->obstacle_radius;	
+	r = this->obstacle_radius;
 	x = target_obsacle.x-this->x;
 	y = target_obsacle.y-this->y;
 	l = sqrt(x*x+y*y);
@@ -56,12 +56,12 @@ void Obstacle::dct_points(Obstacle target_obstacle, Point &p1a, Point &p1b, Poin
 	p2a.x=target_obstacle.x - y*r/l;
 	p2a.y=target_obstacle.y + x*r/l;
 	p2b.x=target_obstacle.x + y*r/l;
-	p2b.y=target_obstacle.y - x*r/l;	
+	p2b.y=target_obstacle.y - x*r/l;
 	p1a.orientation = CLOCKWISE;
 	p1b.orientation = ANTICLOCKWISE;
 	p2a.orientation = CLOCKWISE;
 	p2b.orientation = ANTICLOCKWISE;
-	
+
 	p1a.parent_id = -1;
 	p1a.obstacle_id = this->id;
 	p1b.parent_id = -1;
@@ -94,7 +94,7 @@ bool Obstacle::is_valid_angle(Point source_point, Point target_point, Orientatio
 	if((w == CLOCKWISE && res<0) || (w == ANTICLOCKWISE && res>0))
 	//ensure smaller angle is in correct orientation
 		return true;
-	else 
+	else
 		return false;
 }
 
@@ -125,4 +125,3 @@ bool Obstacle::is_touching(Obstacle target_obstacle)
 	return (dl < target_obstacle.obstacle_radius + this->obstacle_radius);
 }
 */
-

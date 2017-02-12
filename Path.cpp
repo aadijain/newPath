@@ -2,13 +2,16 @@
 
 void Path::draw()
 {
+	dr.clear();
 	dr.displayPoints(p);
 	dr.displaySlider();
 	dr.wait();
 }
-Path::Path(PathStructure ps)
+
+void Path::update()
 {
-	p = ps;
+	dr.getMouseData();
+	p = dr.ps;
 }
 
 /*Path::initialize()// create special points and obstacles
@@ -44,7 +47,5 @@ Path::Path(PathStructure ps)
 
 void Path::generate_tree()
 {
-	
+
 } */
-
-
