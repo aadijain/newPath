@@ -1,5 +1,49 @@
-#include "Graph.hpp" 
+#include "Graph.hpp"
 
+Point Graph::createPoint(double x, double y)
+{
+    Point p;
+    p.x = x;    p.y = y;
+    p.id = -1;  p.parent_id = -1;   p.obstacle_id = -1;
+    p.w = STRAIGHT;
+    return p;
+}
+
+void Graph::addObst(double x, double y, double r)
+{
+    Obstacle o(x,y,r);
+    o.id = obstacles.size();
+    obstacles.push_back(o);
+}
+void Graph::addPoint(Point &p, int obst_id, Orientation w)
+{
+    p.id = points.size();
+    p.obstacle_id = obst_id;
+    p.w = w;
+    points.push_back(p);
+    vector<int> v;
+    edges.push_back(v);
+}
+
+void Graph::addEdge(Point &a, Point &b)
+{
+    b.parent_id = a.id;
+    edges[a.id].push_back(b.id);
+    // edges[b.id].push_back(a.id);
+}
+
+void Graph::removeEdge(Point &a, Point &b)
+{
+    b.parent_id = -1;
+    for(int i = 0; i < edges[a.id].size(); i++)
+    {
+        if(edges[a.id][i] == b.id)
+        {
+            edges[a.id].erase(edges[a.id].begin()+i);
+            return;
+        }
+    }
+}
 // double Obstacle::line_cost(Point p1, Point p2)
 // {
 // 	double x,y,l;

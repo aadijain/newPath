@@ -10,21 +10,26 @@
 #include "Graph.hpp"
 #include "Drawer.hpp"
 
+#define OBSTACLE_RADIUS 30
+#define ORIENTATION_RADIUS 30
+
 using namespace std;
 
 class Path
 {
 	private:
-		PathStructure p;
+		PathStructure ps;
 		Point start,ball,goal;
 		vector<Segment> final_path;
 		Graph tree;
 		Drawer dr;
 	public:
 		Path(PathStructure ps) {
-			p = ps;
+			ps = ps;
+			dr.ps = ps;
 		}
 		void update();
+		void generate_tree();
 		// vector<Segment> getPath();
 		void draw();
 };

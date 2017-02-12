@@ -9,7 +9,6 @@
 #include <opencv2/opencv.hpp>
 // #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-// #include "opencv2/highgui/highgui.hpp"
 // #include <opencv2/imgcodecs.hpp>
 #define WIN_SIZE_X 500
 #define WIN_SIZE_Y 500
@@ -28,7 +27,7 @@ class Drawer
         Drawer();
         void clear();
         void displayPoints(PathStructure ps);
-        // void displayGraph(Graph g);
+        void displayGraph(Graph &G);
         // void displayPath(vector<Segment> p);
         void displaySlider();
         void getMouseData();

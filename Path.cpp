@@ -3,7 +3,8 @@
 void Path::draw()
 {
 	dr.clear();
-	dr.displayPoints(p);
+	dr.displayPoints(ps);
+	dr.displayGraph(tree);
 	dr.displaySlider();
 	dr.wait();
 }
@@ -11,7 +12,7 @@ void Path::draw()
 void Path::update()
 {
 	dr.getMouseData();
-	p = dr.ps;
+	ps = dr.ps;
 }
 
 /*Path::initialize()// create special points and obstacles
@@ -43,9 +44,21 @@ void Path::update()
 	//check if very close to ball
 	//check if very far from ball
 	//side walk, back walk, etc
-}
+}*/
 
 void Path::generate_tree()
 {
-
-} */
+	tree = Graph();
+	start = tree.createPoint(0,0);
+	ball =  tree.createPoint(ps.ball.x,ps.ball.y);
+	goal = tree.createPoint(0.5*(ps.gpleft.x+ps.gpright.x),0.5*(ps.gpleft.y+ps.gpright.y));
+	tree.addObst(0,ORIENTATION_RADIUS,ORIENTATION_RADIUS);
+	tree.addObst(0,-ORIENTATION_RADIUS,ORIENTATION_RADIUS);
+	tree.addPoint(start,0, CLOCKWISE);
+	tree.addPoint(ball, 1, ANTICLOCKWISE);
+	tree.addPoint(goal, 1, ANTICLOCKWISE);
+	tree.addEdge(start,ball);
+	tree.addEdge(start,goal);
+	tree.addEdge(ball,goal);
+	tree.removeEdge(start,goal);
+}
