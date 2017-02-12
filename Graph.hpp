@@ -12,7 +12,6 @@ using namespace std;
 class Graph
 {
 	private:
-		// double lineLen(Point p1, Point p2);
 		// double arcLen(Point p1, Point p2);
 		// double cost(Point p1, Point p2, Point p3);
 		// void dijkstra()
@@ -25,5 +24,6 @@ class Graph
 		void addPoint(Point &p, int obst_id, Orientation w);
 		void addEdge(Point &p1, Point &p2);
 		void removeEdge(Point &p1,Point &p2);
+		static double dist(Point p1, Point p2);
 };
 #endif

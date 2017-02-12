@@ -26,6 +26,14 @@ void Drawer::callBack(int event, int x, int y, int flags, void* userdata)
             ps.ball.x = x - WIN_SIZE_X/2;
     		ps.ball.y = y - WIN_SIZE_Y/2;
             break;
+        case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_MBUTTON:
+            ps.dir.x = x - WIN_SIZE_X/2;
+            ps.dir.y = y - WIN_SIZE_Y/2;
+        break;
+        case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_LBUTTON:
+            ps.start.x = x - WIN_SIZE_X/2;
+    		ps.start.y = y - WIN_SIZE_Y/2;
+            break;
         case cv::EVENT_FLAG_CTRLKEY + cv::EVENT_FLAG_LBUTTON:
             ps.obj[0].x = x - WIN_SIZE_X/2;
     		ps.obj[0].y = y - WIN_SIZE_Y/2;
@@ -34,11 +42,11 @@ void Drawer::callBack(int event, int x, int y, int flags, void* userdata)
             ps.obj[1].x = x - WIN_SIZE_X/2;
     		ps.obj[1].y = y - WIN_SIZE_Y/2;
             break;
-        case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_LBUTTON:
+        case cv::EVENT_FLAG_ALTKEY + cv::EVENT_FLAG_LBUTTON:
             // ps.obj[3].x = x - WIN_SIZE_X/2;
     		// ps.obj[3].y = y - WIN_SIZE_Y/2;
             // break;
-        case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_MBUTTON:
+        case cv::EVENT_FLAG_ALTKEY + cv::EVENT_FLAG_MBUTTON:
             ps.obj[2].x = x - WIN_SIZE_X/2;
     		ps.obj[2].y = y - WIN_SIZE_Y/2;
             break;
@@ -59,7 +67,10 @@ void Drawer::clear()
 
 void Drawer::displayPoints(PathStructure ps)
 {
-    cv::circle(image, cv::Point(WIN_SIZE_X/2,WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
+    cv::circle(image, cv::Point(ps.start.x + WIN_SIZE_X/2,ps.start.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
+    cv::line(image, cv::Point(ps.start.x + WIN_SIZE_X/2, ps.start.y + WIN_SIZE_Y/2),
+                    cv::Point(ps.start.x + ps.dir.x + WIN_SIZE_X/2, ps.start.y + ps.dir.y + WIN_SIZE_Y/2),
+                    cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.ball.x + WIN_SIZE_X/2, ps.ball.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.gpleft.x + WIN_SIZE_X/2, ps.gpleft.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.gpright.x + WIN_SIZE_X/2, ps.gpright.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
@@ -84,6 +95,8 @@ void Drawer::displayGraph(Graph &G)
                             cv::Scalar(255,100,100));
         }
     }
+    for(int i = 0; i < 2; i++)
+        cv::circle(image, cv::Point(G.obstacles[i].x + WIN_SIZE_X/2, G.obstacles[i].y + WIN_SIZE_Y/2),G.obstacles[i].obstacle_radius,cv::Scalar(255,100,255));
     cv::imshow("Window", image);
 }
 

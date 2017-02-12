@@ -15,7 +15,7 @@ struct Point {
 };
 
 struct PathStructure {
-    Point ball,gpleft,gpright;
+    Point start,dir,ball,gpleft,gpright;
     Point obj[10];
     int noofobstacles;
 };

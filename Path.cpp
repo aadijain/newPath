@@ -49,16 +49,44 @@ void Path::update()
 void Path::generate_tree()
 {
 	tree = Graph();
-	start = tree.createPoint(0,0);
+	start = tree.createPoint(ps.start.x,ps.start.y);
 	ball =  tree.createPoint(ps.ball.x,ps.ball.y);
 	goal = tree.createPoint(0.5*(ps.gpleft.x+ps.gpright.x),0.5*(ps.gpleft.y+ps.gpright.y));
-	tree.addObst(0,ORIENTATION_RADIUS,ORIENTATION_RADIUS);
-	tree.addObst(0,-ORIENTATION_RADIUS,ORIENTATION_RADIUS);
-	tree.addPoint(start,0, CLOCKWISE);
-	tree.addPoint(ball, 1, ANTICLOCKWISE);
-	tree.addPoint(goal, 1, ANTICLOCKWISE);
+
+	double dx,dy,dl;
+	Point p1,p2;
+	dx = ps.dir.x;
+	dy = ps.dir.y;
+	dl = sqrt(dx*dx + dy*dy);
+	p1 = tree.createPoint(start.x - ORIENTATION_RADIUS*dy/dl, start.y + ORIENTATION_RADIUS*dx/dl);
+	p2 = tree.createPoint(start.x + ORIENTATION_RADIUS*dy/dl, start.y - ORIENTATION_RADIUS*dx/dl);
+	//add virtual objects around start
+	if(Graph::dist(p1,ball) < Graph::dist(p2,ball))	{
+		tree.addObst(p1.x, p1.y, ORIENTATION_RADIUS);
+		tree.addPoint(start,0,CLOCKWISE);
+	}
+	else	{
+		tree.addObst(p2.x, p2.y, ORIENTATION_RADIUS);
+		tree.addPoint(start,0,ANTICLOCKWISE);
+	}
+	dx = goal.x - ball.x;
+	dy = goal.y - ball.y;
+	dl = sqrt(dx*dx + dy*dy);
+	p1 = tree.createPoint(ball.x - ORIENTATION_RADIUS*dy/dl, ball.y + ORIENTATION_RADIUS*dx/dl);
+	p2 = tree.createPoint(ball.x + ORIENTATION_RADIUS*dy/dl, ball.y - ORIENTATION_RADIUS*dx/dl);
+	//add virtual objects around ball
+	if(Graph::dist(p1,start) < Graph::dist(p2,start))	{
+		tree.addObst(p1.x, p1.y, ORIENTATION_RADIUS);
+		tree.addPoint(ball,1,CLOCKWISE);
+	}
+	else	{
+		tree.addObst(p2.x, p2.y, ORIENTATION_RADIUS);
+		tree.addPoint(ball,1,ANTICLOCKWISE);
+	}
+	tree.addPoint(goal,-1,STRAIGHT);
 	tree.addEdge(start,ball);
 	tree.addEdge(start,goal);
 	tree.addEdge(ball,goal);
 	tree.removeEdge(start,goal);
+	tree.addEdge(goal,start);
 }

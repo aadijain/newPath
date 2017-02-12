@@ -11,7 +11,7 @@
 #include "Drawer.hpp"
 
 #define OBSTACLE_RADIUS 30
-#define ORIENTATION_RADIUS 30
+#define ORIENTATION_RADIUS 10
 
 using namespace std;
 

@@ -44,6 +44,14 @@ void Graph::removeEdge(Point &a, Point &b)
         }
     }
 }
+
+double Graph::dist(Point a, Point b)
+{
+    double dx = b.x - a.x;
+    double dy = b.y - a.y;
+    double dr = sqrt(dx*dx + dy*dy);
+    return dr;
+}
 // double Obstacle::line_cost(Point p1, Point p2)
 // {
 // 	double x,y,l;
