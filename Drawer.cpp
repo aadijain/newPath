@@ -1,7 +1,7 @@
 #include "Drawer.hpp"
 
-int Drawer::NP = 3;
-int Drawer::D0 = 50;
+int Drawer::A = 0;
+int Drawer::B = 1;
 PathStructure Drawer::ps;
 
 // void Drawer::ifMoved(int v,void* data)
@@ -27,8 +27,8 @@ void Drawer::callBack(int event, int x, int y, int flags, void* userdata)
     		ps.ball.y = y - WIN_SIZE_Y/2;
             break;
         case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_MBUTTON:
-            ps.dir.x = x - WIN_SIZE_X/2;
-            ps.dir.y = y - WIN_SIZE_Y/2;
+            ps.dir.x = x - ps.start.x - WIN_SIZE_X/2;
+            ps.dir.y = y - ps.start.y - WIN_SIZE_Y/2;
         break;
         case cv::EVENT_FLAG_SHIFTKEY + cv::EVENT_FLAG_LBUTTON:
             ps.start.x = x - WIN_SIZE_X/2;
@@ -68,9 +68,6 @@ void Drawer::clear()
 void Drawer::displayPoints(PathStructure ps)
 {
     cv::circle(image, cv::Point(ps.start.x + WIN_SIZE_X/2,ps.start.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
-    cv::line(image, cv::Point(ps.start.x + WIN_SIZE_X/2, ps.start.y + WIN_SIZE_Y/2),
-                    cv::Point(ps.start.x + ps.dir.x + WIN_SIZE_X/2, ps.start.y + ps.dir.y + WIN_SIZE_Y/2),
-                    cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.ball.x + WIN_SIZE_X/2, ps.ball.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.gpleft.x + WIN_SIZE_X/2, ps.gpleft.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
     cv::circle(image, cv::Point(ps.gpright.x + WIN_SIZE_X/2, ps.gpright.y + WIN_SIZE_Y/2),2,cv::Scalar(100,255,100));
@@ -84,26 +81,35 @@ void Drawer::displayPoints(PathStructure ps)
 
 void Drawer::displayGraph(Graph &G)
 {
-    // printf("Size: %ld\n",G.points.size());
+    printf("\nSize: %ld",G.points.size());
+    cv::circle(image, cv::Point(G.points[A].x + WIN_SIZE_X/2, G.points[A].y + WIN_SIZE_Y/2),4,cv::Scalar(255,255,255));
+    cv::circle(image, cv::Point(G.points[B].x + WIN_SIZE_X/2, G.points[B].y + WIN_SIZE_Y/2),4,cv::Scalar(255,255,255));
+
     for(int i = 0; i < G.edges.size(); i++)
     {
         for(int j = 0; j < G.edges[i].size(); j++)
         {
             int k = G.edges[i][j];
+            cv::Scalar sc;
+            if(G.points[i].w == CLOCKWISE)
+                sc = cv::Scalar(255,255,100);
+            else if(G.points[i].w == ANTICLOCKWISE)
+                sc = cv::Scalar(255,100,255);
+            else
+                sc = cv::Scalar(255,255,255);
             cv::line(image, cv::Point(G.points[i].x + WIN_SIZE_X/2,G.points[i].y + WIN_SIZE_Y/2),
-                            cv::Point(G.points[k].x + WIN_SIZE_X/2,G.points[k].y + WIN_SIZE_Y/2),
-                            cv::Scalar(255,100,100));
+                            cv::Point(G.points[k].x + WIN_SIZE_X/2,G.points[k].y + WIN_SIZE_Y/2),sc);
         }
     }
     for(int i = 0; i < 2; i++)
-        cv::circle(image, cv::Point(G.obstacles[i].x + WIN_SIZE_X/2, G.obstacles[i].y + WIN_SIZE_Y/2),G.obstacles[i].obstacle_radius,cv::Scalar(255,100,255));
+        cv::circle(image, cv::Point(G.obstacles[i].x + WIN_SIZE_X/2, G.obstacles[i].y + WIN_SIZE_Y/2),G.obstacles[i].obstacle_radius,cv::Scalar(100,100,100));
     cv::imshow("Window", image);
 }
 
 void Drawer::displaySlider()
 {
-    cv::createTrackbar( "NP:", "Window", &Drawer::NP, 10);
-    cv::createTrackbar( "D0:", "Window", &Drawer::D0, 100);
+    cv::createTrackbar( "A:", "Window", &Drawer::A, 20);
+    cv::createTrackbar( "B:", "Window", &Drawer::B, 20);
 }
 void Drawer::getMouseData()
 {

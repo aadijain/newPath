@@ -19,10 +19,13 @@ class Path
 {
 	private:
 		PathStructure ps;
-		Point start,ball,goal;
+		Point minus,start,ball,goal;
 		vector<Segment> final_path;
 		Graph tree;
 		Drawer dr;
+		void shift(Point &p);
+		bool split_edge(Point A,Point B);//&A ,&B ?
+		bool check_parent(Point a);
 	public:
 		Path(PathStructure ps) {
 			ps = ps;
@@ -30,6 +33,7 @@ class Path
 		}
 		void update();
 		void generate_tree();
+		void initialize_tree();
 		// vector<Segment> getPath();
 		void draw();
 };

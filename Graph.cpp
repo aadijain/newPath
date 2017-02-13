@@ -8,12 +8,18 @@ Point Graph::createPoint(double x, double y)
     p.w = STRAIGHT;
     return p;
 }
-
 void Graph::addObst(double x, double y, double r)
 {
     Obstacle o(x,y,r);
     o.id = obstacles.size();
     obstacles.push_back(o);
+}
+void Graph::addPoint(Point &p)
+{
+    p.id = points.size();
+    points.push_back(p);
+    vector<int> v;
+    edges.push_back(v);
 }
 void Graph::addPoint(Point &p, int obst_id, Orientation w)
 {
@@ -24,17 +30,16 @@ void Graph::addPoint(Point &p, int obst_id, Orientation w)
     vector<int> v;
     edges.push_back(v);
 }
-
-void Graph::addEdge(Point &a, Point &b)
+void Graph::addEdge(Point a, Point b)
 {
-    b.parent_id = a.id;
+	// printf("\n%d-%d",a.id,b.id);
+    points[b.id].parent_id = a.id;
     edges[a.id].push_back(b.id);
     // edges[b.id].push_back(a.id);
 }
-
-void Graph::removeEdge(Point &a, Point &b)
+void Graph::removeEdge(Point a, Point b)
 {
-    b.parent_id = -1;
+    // points[b.id].parent_id = -1;
     for(int i = 0; i < edges[a.id].size(); i++)
     {
         if(edges[a.id][i] == b.id)
@@ -44,7 +49,6 @@ void Graph::removeEdge(Point &a, Point &b)
         }
     }
 }
-
 double Graph::dist(Point a, Point b)
 {
     double dx = b.x - a.x;

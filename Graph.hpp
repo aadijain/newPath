@@ -21,9 +21,10 @@ class Graph
 		vector<Obstacle> obstacles;
 		Point createPoint(double x,double y);
 		void addObst(double x,double y,double r);
+		void addPoint(Point &p);
 		void addPoint(Point &p, int obst_id, Orientation w);
-		void addEdge(Point &p1, Point &p2);
-		void removeEdge(Point &p1,Point &p2);
+		void addEdge(Point p1, Point p2);
+		void removeEdge(Point p1,Point p2);
 		static double dist(Point p1, Point p2);
 };
 #endif

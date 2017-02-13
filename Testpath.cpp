@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 	while(true)
 	{
 		p.update();
+		p.initialize_tree();
 		p.generate_tree();
 		p.draw();
 	}

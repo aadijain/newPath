@@ -22,7 +22,7 @@ class Drawer
         // static void ifMoved(int v,void* data);
         static void callBack(int event, int x, int y, int flags, void *userdata);
     public:
-        static int NP,D0;
+        static int A,B;
         static PathStructure ps;
         Drawer();
         void clear();
