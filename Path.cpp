@@ -85,18 +85,18 @@ void Path::generate_tree()
 {
 	tree.addEdge(start,ball);
 	int id, jd, kd;
-	id = 0;
-	while(id<tree.edges.size())
-	{
-		jd = 0;
-		while(jd < tree.edges[id].size())
+	bool status;
+	do{
+		status = false;
+		for(id = tree.edges.size()-1; id >= 0; id--)
 		{
-			kd = tree.edges[id][jd];
-			if(!split_edge(tree.points[id],tree.points[kd]))
-				jd++;
+			for(jd = tree.edges[id].size()-1; jd >= 0; jd--)
+			{
+				kd = tree.edges[id][jd];
+				status = split_edge(tree.points[id],tree.points[kd]);
+			}
 		}
-		id++;
-	}
+	}while(status);
 	tree.addEdge(ball,goal);
 	tree.addEdge(minus,start);
 }
@@ -127,19 +127,19 @@ bool Path::check_parent(Point a)
 
 bool Path::split_edge(Point A, Point B)
 {
-	Point p1, p2;
 	for(int ctr = 2; ctr < tree.obstacles.size(); ctr++)
 	{
 		if(tree.obstacles[ctr].is_blocking(A,B))
 		{
+			Point p1, p2;
 			tree.obstacles[ctr].extreme_points(A,B,p1,p2);
 			shift(p1);
 			shift(p2);
-			// bool status = false;
+			bool status = false;
 			if(p1.obstacle_id != A.obstacle_id && p1.obstacle_id != B.obstacle_id)  {
 				if(p1.w == A.w || !tree.obstacles[A.obstacle_id].is_touching(tree.obstacles[p1.obstacle_id]))	{
 					if(p1.w == B.w || !tree.obstacles[B.obstacle_id].is_touching(tree.obstacles[p1.obstacle_id]))	{
-						// status = true;
+						status = true;
 						tree.addPoint(p1);
 						tree.addEdge(A,p1);
 						tree.addEdge(p1,B);
@@ -153,7 +153,7 @@ bool Path::split_edge(Point A, Point B)
 			if(p2.obstacle_id != A.obstacle_id && p2.obstacle_id != B.obstacle_id)  {
 				if(p2.w == A.w || !tree.obstacles[A.obstacle_id].is_touching(tree.obstacles[p2.obstacle_id]))	{
 					if(p2.w == B.w || !tree.obstacles[B.obstacle_id].is_touching(tree.obstacles[p2.obstacle_id]))	{
-						// status = true;
+						status = true;
 						tree.addPoint(p2);
 						tree.addEdge(A,p2);
 						tree.addEdge(p2,B);
@@ -164,9 +164,9 @@ bool Path::split_edge(Point A, Point B)
 					}
 				}
 			}
-			// if(status)
-				tree.removeEdge(A,B);
-			return true;
+			tree.removeEdge(A,B);
+			if(status)
+				return true;
 		}
 	}
 	return false;
